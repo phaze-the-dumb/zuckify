@@ -3,6 +3,7 @@
         <style>
             body{
                 margin: 0;
+                font-family: 'Courier New', Courier, monospace;
             }
 
             #ctxMenu{
@@ -11,14 +12,72 @@
                 top: 0;
                 display: none;
                 background: #000;
+                padding: 5px;
+                border-radius: 5px;
+                color: white;
+            }
+
+            .selectMenu{
+                transition: 0.25s;
+                padding: 5px;
+                cursor: pointer;
+                user-select: none;
+            }
+
+            .selectMenu:hover{
+                background: gray;
+                border-radius: 5px;
+                color: black;
+            }
+
+            #nodeMenu{
+                position: fixed;
+                left: 0;
+                top: 0;
+                display: none;
+                background: #000;
+                padding: 5px;
+                border-radius: 5px;
+                color: white;
+            }
+
+            .textInput{
+                width: 300px;
+            }
+
+            .closeBtn{
+                user-select: none;
+                cursor: pointer;
+                background: gray;
+                color: white;
+                text-align: center;
+                padding: 5px;
+                border-radius: 10px;
+            }
+
+            .nodes{
+                padding: 5px;
             }
         </style>
     </head>
     <body>
         <div id="ctxMenu">
-            <div>Create Node</div>
+            <div class="selectMenu" onclick="openNodes()">Create Node</div>
         </div>
 
+        <div id="nodeMenu">
+            <input type="text" placeholder="Search..." class="textInput" id=""><br />
+
+            <div class="nodes"></div>
+
+            <div class="closeBtn" onclick="closeNodes()">Close</div>
+        </div>
+
+        <div id="editMenu">
+            
+        </div>
+
+        <script src="./nodes.js"></script>
         <script src="./main.js"></script>
     </body>
 </html>
