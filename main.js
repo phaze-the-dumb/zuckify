@@ -57,6 +57,12 @@ window.onresize = () => {
     ctx.translate(canvas.width / 2, canvas.height / 2); 
 }
 
+window.onkeyup = ( e ) => {
+    if(e.key === 'Delete' && config.selected){
+        nodes = nodes.filter(x => x !== config.selected);
+    }
+}
+
 window.onclick = () => {
     ctxMenu.shown = false;
     contextMenu.style.display = 'none';
@@ -296,11 +302,13 @@ let render = () => {
                 text += ' ('+input.defaultValue+')';
 
             if(input.type === 'flow'){
+                ctx.fillStyle = '#fff';
                 ctx.fillText((input.name || input.type) + text, ...drawAt(n.x + 25, n.y + 75 + (i * 50) + 7));
                 
                 ctx.fillStyle = '#fff';
                 ctx.fillRect(...drawAt(n.x + 10, n.y + 75 + (i * 50), 10, 10));
             } else{
+                ctx.fillStyle = '#fff';
                 ctx.fillText((input.name || input.type) + text, ...drawAt(n.x + 25, n.y + 75 + (i * 50) + 7));
 
                 ctx.fillStyle = colours[input.type];
@@ -313,11 +321,13 @@ let render = () => {
             output.i = i;
 
             if(output.type === 'flow'){
+                ctx.fillStyle = '#fff';
                 ctx.fillText(output.name || output.type, ...drawAt(n.x + 175, n.y + 75 + (i * 50) + 7));
 
                 ctx.fillStyle = '#fff';
                 ctx.fillRect(...drawAt(n.x + 180, n.y + 75 + (i * 50), 10, 10));
             } else{
+                ctx.fillStyle = '#fff';
                 ctx.fillText(output.name || output.type, ...drawAt(n.x + 175, n.y + 75 + (i * 50) + 7));
 
                 ctx.fillStyle = colours[output.type];
