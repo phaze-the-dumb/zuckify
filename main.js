@@ -1,18 +1,18 @@
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
 
-const contextMenu = document.querySelector('#ctxMenu');
-let nodes = [];
+document.body.appendChild(canvas);
 
+const contextMenu = document.querySelector('#ctxMenu');
+
+let nodes = [];
 let colours = {
     'bool': '#db2b6f',
     'int': '#2bbbdb',
     'string': '#7cd64f'
 }
 
-document.body.appendChild(canvas);
 let lerp = (x, y, a) => x * (1 - a) + y * a;
-
 let config = {
     zuckify: false,
     gridX: 25000,
@@ -60,6 +60,7 @@ window.onresize = () => {
 window.onkeyup = ( e ) => {
     if(e.key === 'Delete' && config.selected){
         nodes = nodes.filter(x => x !== config.selected);
+        config.selected = null;
     }
 }
 
@@ -89,6 +90,9 @@ window.onclick = () => {
                     lineStart.y = mouse.y;
                     lineStart.node = n;
                     lineStart.nodeOutput = output;
+
+                    output.connectedTo.connectedTo = null;
+                    output.connectedTo = null;
                 }
             })
         }
@@ -291,8 +295,8 @@ let render = () => {
         ctx.fillText(n.name, ...drawAt(n.x + 10, n.y + 30));
 
         ctx.font = (10 * config.scale) + 'px Arial';
-
         ctx.textAlign = 'left';
+
         n.inputs.forEach((input, i) => {
             input.i = i;
 
@@ -317,6 +321,7 @@ let render = () => {
         })
 
         ctx.textAlign = 'right';
+
         n.outputs.forEach((output, i) => {
             output.i = i;
 
@@ -335,7 +340,10 @@ let render = () => {
             }
 
             if(output.connectedTo)
-                queuedLines.push([ drawAt(n.x + 185, n.y + 75 + (i * 50) + 5), drawAt(output.connectedTo.node.x + 15, output.connectedTo.node.y + 75 + (output.connectedTo.connection.i * 50) + 5) ])
+                queuedLines.push([
+                    drawAt(n.x + 185, n.y + 75 + (i * 50) + 5),
+                    drawAt(output.connectedTo.node.x + 15, output.connectedTo.node.y + 75 + (output.connectedTo.connection.i * 50) + 5)
+                ])
         })
     })
 
@@ -395,8 +403,165 @@ let render = () => {
     })
 }
 
-let openEditMenu = ( input ) => {
+let openEditMenu = ( inp ) => {
+    if(inp.type === 'string'){
+        document.querySelector('#editMenu').style.display = 'block';
+        document.querySelector('#editMenu').style.top = mouse.y;
+        document.querySelector('#editMenu').style.left = mouse.x;
 
+        let heading = document.createElement('h1');
+
+        if(inp.name)
+            heading.innerHTML = inp.name+'<span style="font-size: 20px;">: '+inp.type+'</span>';
+        else
+            heading.innerHTML = inp.type
+
+        let input = document.createElement('input');
+        input.type = 'text';
+        input.classList.add('textInput');
+        input.placeholder = 'Default Value...';
+
+        input.onchange = () => {
+            inp.defaultValue = input.value;
+        }
+
+        let closeBtn = document.createElement('div');
+        closeBtn.classList.add('closeBtn');
+        closeBtn.onclick = () => {
+            document.querySelector('#editMenu').style.display = 'none';
+        }
+        closeBtn.innerHTML = 'Close';
+
+        let br1 = document.createElement('br');
+        let br2 = document.createElement('br');
+
+        document.querySelector('#editMenu').innerHTML = '';
+        document.querySelector('#editMenu').appendChild(heading);
+        document.querySelector('#editMenu').appendChild(input);
+        document.querySelector('#editMenu').appendChild(br1);
+        document.querySelector('#editMenu').appendChild(br2);
+        document.querySelector('#editMenu').appendChild(closeBtn);
+
+        input.focus();
+    } else if(inp.type === 'int'){
+        document.querySelector('#editMenu').style.display = 'block';
+        document.querySelector('#editMenu').style.top = mouse.y;
+        document.querySelector('#editMenu').style.left = mouse.x;
+
+        let heading = document.createElement('h1');
+
+        if(inp.name)
+            heading.innerHTML = inp.name+'<span style="font-size: 20px;">: '+inp.type+'</span>';
+        else
+            heading.innerHTML = inp.type
+
+        let input = document.createElement('input');
+        input.type = 'number';
+        input.classList.add('textInput');
+        input.placeholder = 'Default Value...';
+
+        input.onchange = () => {
+            inp.defaultValue = parseInt(input.value);
+        }
+
+        let closeBtn = document.createElement('div');
+        closeBtn.classList.add('closeBtn');
+        closeBtn.onclick = () => {
+            document.querySelector('#editMenu').style.display = 'none';
+        }
+        closeBtn.innerHTML = 'Close';
+
+        let br1 = document.createElement('br');
+        let br2 = document.createElement('br');
+
+        document.querySelector('#editMenu').innerHTML = '';
+        document.querySelector('#editMenu').appendChild(heading);
+        document.querySelector('#editMenu').appendChild(input);
+        document.querySelector('#editMenu').appendChild(br1);
+        document.querySelector('#editMenu').appendChild(br2);
+        document.querySelector('#editMenu').appendChild(closeBtn);
+
+        input.focus();
+    } else if(inp.type === 'float'){
+        document.querySelector('#editMenu').style.display = 'block';
+        document.querySelector('#editMenu').style.top = mouse.y;
+        document.querySelector('#editMenu').style.left = mouse.x;
+
+        let heading = document.createElement('h1');
+
+        if(inp.name)
+            heading.innerHTML = inp.name+'<span style="font-size: 20px;">: '+inp.type+'</span>';
+        else
+            heading.innerHTML = inp.type
+
+        let input = document.createElement('input');
+        input.type = 'number';
+        input.classList.add('textInput');
+        input.placeholder = 'Default Value...';
+
+        input.onchange = () => {
+            inp.defaultValue = parseFloat(input.value);
+        }
+
+        let closeBtn = document.createElement('div');
+        closeBtn.classList.add('closeBtn');
+        closeBtn.onclick = () => {
+            document.querySelector('#editMenu').style.display = 'none';
+        }
+        closeBtn.innerHTML = 'Close';
+
+        let br1 = document.createElement('br');
+        let br2 = document.createElement('br');
+
+        document.querySelector('#editMenu').innerHTML = '';
+        document.querySelector('#editMenu').appendChild(heading);
+        document.querySelector('#editMenu').appendChild(input);
+        document.querySelector('#editMenu').appendChild(br1);
+        document.querySelector('#editMenu').appendChild(br2);
+        document.querySelector('#editMenu').appendChild(closeBtn);
+
+        input.focus();
+    } else if(inp.type === 'bool'){
+        document.querySelector('#editMenu').style.display = 'block';
+        document.querySelector('#editMenu').style.top = mouse.y;
+        document.querySelector('#editMenu').style.left = mouse.x;
+
+        let heading = document.createElement('h1');
+
+        if(inp.name)
+            heading.innerHTML = inp.name+'<span style="font-size: 20px;">: '+inp.type+'</span>';
+        else
+            heading.innerHTML = inp.type
+
+        let input = document.createElement('input');
+        input.type = 'checkbox';
+
+        if(inp.defaultValue)
+            input.checked = true;
+
+        input.onchange = () => {
+            inp.defaultValue = input.checked;
+        }
+
+        let closeBtn = document.createElement('div');
+        closeBtn.classList.add('closeBtn');
+        closeBtn.onclick = () => {
+            document.querySelector('#editMenu').style.display = 'none';
+        }
+        closeBtn.innerHTML = 'Close';
+
+        let br1 = document.createElement('br');
+        let br2 = document.createElement('br');
+
+        document.querySelector('#editMenu').innerHTML = '';
+        document.querySelector('#editMenu').appendChild(heading);
+        document.querySelector('#editMenu').appendChild(input);
+        document.querySelector('#editMenu').appendChild(br1);
+        document.querySelector('#editMenu').appendChild(br2);
+        document.querySelector('#editMenu').appendChild(closeBtn);
+
+        input.focus();
+    }
 }
 
 render();

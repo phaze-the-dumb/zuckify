@@ -87,7 +87,7 @@ let getDefaultNodeGroups = () => {
     return [ { id: 'g-events', name: 'Events >' }, { id: 'g-logic', name: 'Logic >' }, { id: 'g-other', name: 'Other >' } ];
 }
 
-let getGroupById = ( id ) => {
+let getGroupById = ( id = String.prototype ) => {
     let groups = {
         'g-events': [
             { id: 'n-start', name: 'On Start' }

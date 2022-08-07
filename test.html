@@ -58,6 +58,17 @@
             .nodes{
                 padding: 5px;
             }
+
+            #editMenu{
+                position: fixed;
+                left: 0;
+                top: 0;
+                display: none;
+                background: #000;
+                padding: 5px;
+                border-radius: 5px;
+                color: white;
+            }
         </style>
     </head>
     <body>
@@ -74,7 +85,24 @@
         </div>
 
         <div id="editMenu">
-            
+            <h1>String<span style="font-size: 20px;">: String</span></h1>
+
+            <input type="text" class="textInput" placeholder="Default Value">
+            <hr />
+
+            <h1>Int<span style="font-size: 20px;">: Int</span></h1>
+
+            <input type="number" class="textInput" placeholder="Default Value">
+            <hr />
+
+            <h1>Float<span style="font-size: 20px;">: Float</span></h1>
+
+            <input type="number" class="textInput" placeholder="Default Value">
+            <hr />
+
+            <h1>Bool<span style="font-size: 20px;">: Bool</span></h1>
+
+            Default Value: <input type="checkbox">
         </div>
 
         <script src="./nodes.js"></script>
